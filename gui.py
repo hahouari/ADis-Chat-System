@@ -7,7 +7,7 @@ class MainWindow(QMainWindow):
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
 
-        self.setWindowTitle("Chat System (ADis)")
+        self.setWindowTitle("Chat System (ADis) Client")
 
         g_layout = QVBoxLayout()
 
@@ -24,13 +24,7 @@ class MainWindow(QMainWindow):
 
         msg_label_layout.addWidget(msg_label, 1)
         msg_label_layout.addWidget(self.con_status)
-        # msg_label_layout.setAlignment(
-        #     self.con_status, Qt.AlignmentFlag.AlignRight
-        # )
         msg_label_layout.addWidget(self.user_lbl)
-        # msg_label_layout.setAlignment(
-        #     self.user_lbl, Qt.AlignmentFlag.AlignRight
-        # )
 
         msg_label_widget = QWidget(self)
         msg_label_widget.setLayout(msg_label_layout)
@@ -89,9 +83,68 @@ class MainWindow(QMainWindow):
         self.msg_input.setFocus()
 
 
+class ControlWindow(QMainWindow):
+    def __init__(self, flags):
+        super(ControlWindow, self).__init__(flags=flags)
+
+        self.setWindowTitle("Chat System (ADis) Control")
+
+        g_layout = QVBoxLayout()
+
+        # nameserver layout
+        nameserver_layout = QHBoxLayout()
+        nameserver_layout.setContentsMargins(QMargins())
+
+        nameserver_lbl = QLabel("Start nameserver:", self)
+        self.start_nameserver = QPushButton('&Start', self)
+
+        nameserver_layout.addWidget(nameserver_lbl, 1)
+        nameserver_layout.addWidget(self.start_nameserver)
+
+        nameserver_widget = QWidget(self)
+        nameserver_widget.setLayout(nameserver_layout)
+        g_layout.addWidget(nameserver_widget)
+        # end: nameserver layout
+
+        # client layout
+        client_layout = QHBoxLayout()
+        client_layout.setContentsMargins(QMargins())
+
+        client_lbl = QLabel("Create client(s):", self)
+        self.clients_num = QLineEdit()
+        self.clients_num.setValidator(QIntValidator())
+        self.clients_num.setText('1')
+        self.clients_num.setAlignment(Qt.AlignRight)
+        self.clients_num.setMaximumWidth(30)
+        self.create_client = QPushButton('&Create', self)
+        self.create_client.setDisabled(True)
+
+        client_layout.addWidget(client_lbl, 1)
+        client_layout.addWidget(self.clients_num)
+        client_layout.addWidget(self.create_client)
+
+        client_widget = QWidget(self)
+        client_widget.setLayout(client_layout)
+        g_layout.addWidget(client_widget)
+        # end: client layout
+
+        g_widget = QWidget(self)
+        g_widget.setLayout(g_layout)
+
+        self.setCentralWidget(g_widget)
+
+
 def client_gui() -> MainWindow:
     window = MainWindow()
     window.resize(550, 400)
+    window.move(80, 100)
+    window.show()
+    return window
+
+
+def control_gui() -> ControlWindow:
+    window = ControlWindow(Qt.WindowStaysOnTopHint)
+    window.setFixedSize(320, 80)
     window.move(80, 100)
     window.show()
     return window

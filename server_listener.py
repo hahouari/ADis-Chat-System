@@ -24,7 +24,8 @@ class ServerListener(QThread):
         print("Pyro4.locateNS")
         try:
             self.chat_server.g_ns = Pyro4.locateNS()
-        except Exception:
+        except Exception as ex:
+            print(ex)
             window.setNoConnection()
             return
         print("g_ns.register")
