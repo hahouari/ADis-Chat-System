@@ -42,8 +42,8 @@ class ChatServer(QObject):
     def window_close(self, event):
         event.accept()
 
-        if (self.g_ns and hasattr(self.g_ns, 'unregister')):
-            self.g_ns.unregister(
+        if (self.g_ns and hasattr(self.g_ns, 'remove')):
+            self.g_ns.remove(
                 'hahouari.client.' + self.client_id,
                 str(self.uri)
             )

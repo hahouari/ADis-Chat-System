@@ -89,7 +89,7 @@ class MainWindow(QMainWindow):
         self.msg_input.setFocus()
 
 
-def create_gui() -> MainWindow:
+def client_gui() -> MainWindow:
     window = MainWindow()
     window.resize(550, 400)
     window.move(80, 100)
