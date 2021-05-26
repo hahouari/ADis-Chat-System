@@ -12,9 +12,8 @@ import sys
 def create_client(**kwargs: dict):
     app = QApplication(sys.argv)
     window = client_gui()
-    proc_num = kwargs['proc_num'] or None
-    print(proc_num)
-    server = ChatServer(window, app)
+    proc_num: int = kwargs['proc_num'] or None
+    server = ChatServer(window, app, proc_num)
     server_listener = ServerListener(window, app, server)
     server_listener.start()
     app.exec_()

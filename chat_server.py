@@ -15,13 +15,11 @@ import sys
 class ChatServer(QObject):
     new_message_sig = pyqtSignal('QString', 'QString', 'QString')
 
-    def __init__(self, window: MainWindow, app: QApplication):
+    def __init__(self, window: MainWindow, app: QApplication, client_num: int):
         super().__init__(parent=app)
         self.window = window
         self.g_ns: Proxy = None
-        self.client_id = 'user-' + ''.join(
-            choices(ascii_letters + digits, k=5)
-        )
+        self.client_id = client_num
         self.clients: List[Union[Proxy, ChatServer]] = []
 
         self.window.msg_input.returnPressed.connect(
@@ -44,7 +42,7 @@ class ChatServer(QObject):
 
         if (self.g_ns and hasattr(self.g_ns, 'remove')):
             self.g_ns.remove(
-                'hahouari.client.' + self.client_id,
+                'hahouari.client.' + f'proc{self.client_id}',
                 str(self.uri)
             )
         self.daemon.unregister(self)

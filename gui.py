@@ -77,7 +77,7 @@ class MainWindow(QMainWindow):
 
     def setConnected(self, cl_id: str):
         self.con_status.setText(f'Connected as')
-        self.user_lbl.setText(cl_id)
+        self.user_lbl.setText(f'Process {cl_id}')
         self.msg_input.setDisabled(False)
         self.send_btn.setDisabled(False)
         self.msg_input.setFocus()
