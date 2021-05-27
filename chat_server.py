@@ -4,8 +4,6 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from Pyro4 import Proxy
 from gui import MainWindow
-from random import choices
-from string import ascii_letters, digits
 from threading import Thread
 
 import Pyro4
