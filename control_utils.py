@@ -32,17 +32,21 @@ class ControlUtils:
         self.controlWindow.closeEvent = self.window_close
 
     def on_client_create(self):
-        num = int(self.controlWindow.clients_num.text()) or 0
-        self.controlWindow.clients_num.setText('1')
-        for i in range(num):
-            self.counter += 1
-            print(f'Process [{self.counter}]')
-            p = Process(
-                target=create_client,
-                kwargs={'proc_num': self.counter}
-            )
-            self.clients.append(p)
-            p.start()
+        try:
+            num = int(self.controlWindow.clients_num.text()) or 0
+            for i in range(num):
+                self.counter += 1
+                print(f'Process [{self.counter}]')
+                p = Process(
+                    target=create_client,
+                    kwargs={'proc_num': self.counter}
+                )
+                self.clients.append(p)
+                p.start()
+        except Exception:
+            pass
+        finally:
+            self.controlWindow.clients_num.setText('1')
 
     def on_name_server_start(self):
         if self.ns_proc is not None and self.ns_proc.is_alive:
