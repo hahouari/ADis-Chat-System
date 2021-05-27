@@ -34,8 +34,8 @@ class ServerListener(QThread):
             str(self.chat_server.uri)
         )
         print("g_ns.list")
-        for c_token, client_uri in self.chat_server.g_ns.list(prefix='hahouari.client.').items():
-            if c_token == 'hahouari.client.' + f'proc{self.chat_server.client_id}':
+        for cl_token, client_uri in self.chat_server.g_ns.list(prefix='hahouari.client.').items():
+            if cl_token == 'hahouari.client.' + f'proc{self.chat_server.client_id}':
                 continue
             try:
                 client: ChatServer = Pyro4.Proxy(client_uri)
