@@ -2,7 +2,8 @@ from PyQt5.QtWidgets import *
 from gui import ControlWindow
 from client import create_client
 from multiprocessing import Process
-from typing import List
+from typing import List, Dict
+from adis_utils import SCAlgoChoice
 
 import Pyro4.core
 import Pyro4.naming
@@ -20,7 +21,7 @@ class ControlUtils:
     def __init__(self, controlWindow: ControlWindow):
         super().__init__()
         self.ns_proc: Process = None
-        self.clients: List[Process] = []
+        self.clients: Dict[int, Process] = {}
         self.counter = 0
         self.controlWindow = controlWindow
         self.controlWindow.start_nameserver.clicked.connect(
@@ -33,20 +34,23 @@ class ControlUtils:
 
     def on_client_create(self):
         try:
-            num = int(self.controlWindow.clients_num.text()) or 0
-            for i in range(num):
+            count = int(self.controlWindow.clients_count.text()) or 0
+            for i in range(count):
                 self.counter += 1
                 print(f'Process [{self.counter}]')
                 p = Process(
                     target=create_client,
-                    kwargs={'proc_num': self.counter}
+                    kwargs={
+                        'proc_id': self.counter,
+                        'algorithm': SCAlgoChoice.lamport_bakery
+                    }
                 )
-                self.clients.append(p)
+                self.clients[self.counter] = p
                 p.start()
         except Exception:
             pass
         finally:
-            self.controlWindow.clients_num.setText('1')
+            self.controlWindow.clients_count.setText('1')
 
     def on_name_server_start(self):
         if self.ns_proc is not None and self.ns_proc.is_alive:
@@ -54,7 +58,7 @@ class ControlUtils:
             self.ns_proc = None
             self.controlWindow.create_client.setDisabled(True)
             self.controlWindow.start_nameserver.setText('&Start')
-            for client in self.clients:
+            for client in self.clients.values():
                 if client.is_alive:
                     client.kill()
             self.counter = 0
@@ -69,6 +73,6 @@ class ControlUtils:
         event.accept()
         if self.ns_proc is not None and self.ns_proc.is_alive:
             self.ns_proc.kill()
-            for client in self.clients:
+            for client in self.clients.values():
                 if client.is_alive:
                     client.kill()

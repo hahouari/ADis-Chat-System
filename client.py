@@ -6,19 +6,18 @@ from server_listener import ServerListener
 from PyQt5.QtWidgets import *
 from random import choices
 from string import digits
-
+from adis_utils import LamportBakery
 
 import sys
 
 
-# print(sys.argv)
 def create_client(**kwargs: dict):
     app = QApplication(sys.argv)
     window = client_gui()
-    proc_num: int = kwargs['proc_num'] if 'proc_num' in kwargs else int(
-        ''.join(choices(digits, k=5))
+    proc_id: int = kwargs['proc_id'] if 'proc_id' in kwargs else int(
+        ''.join(choices(digits, k=3))
     )
-    server = ChatServer(window, app, proc_num)
+    server = LamportBakery(window, app, proc_id)
     server_listener = ServerListener(window, app, server)
     server_listener.start()
     app.exec_()
