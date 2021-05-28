@@ -1,15 +1,15 @@
+import os
+import Pyro4
+import Pyro4.socketutil
+import Pyro4.naming
+import Pyro4.core
+from typing import List
+from adis_utils import SCAlgoChoice
+from typing import List, Dict
 from PyQt5.QtWidgets import *
 from gui import ControlWindow
 from client import create_client
 from multiprocessing import Process
-from typing import List, Dict
-from adis_utils import SCAlgoChoice
-
-import Pyro4.core
-import Pyro4.naming
-import Pyro4.socketutil
-import Pyro4
-import os
 
 
 def create_ns():
