@@ -1,6 +1,7 @@
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
+import sys
 
 
 class MainWindow(QMainWindow):
@@ -215,6 +216,10 @@ class ControlWindow(QMainWindow):
         g_widget.setLayout(g_layout)
 
         self.setCentralWidget(g_widget)
+
+    def closeEvent(self, event):
+        event.accept()
+        sys.exit()
 
 
 def client_gui() -> MainWindow:

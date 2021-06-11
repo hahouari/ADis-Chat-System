@@ -103,7 +103,8 @@ class ChatServer(QObject):
         tow: int  # time to wait inside local event
         try:
             tow = int(self.window.local_ev_duration)
-        except Exception:
+        except Exception as ex:
+            print(ex)
             tow = 5
         Thread(target=self.__local_event, args=(tow,)).start()
 
@@ -144,7 +145,8 @@ class ChatServer(QObject):
             try:
                 client = self.clients[self.to_send_cid]
                 Thread(target=client.send_msg, args=(data,)).start()
-            except Exception:
+            except Exception as ex:
+                print(ex)
                 if self.to_send_cid in self.clients:
                     self.clients.pop(self.to_send_cid)
 
@@ -180,7 +182,8 @@ class ChatServer(QObject):
             self.value_add.emit(cid, c_value)
             self.clients[cid] = Pyro4.Proxy(client_uri)
             return True
-        except Exception:
+        except Exception as ex:
+            print(ex)
             return False
 
     @Pyro4.expose

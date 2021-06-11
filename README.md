@@ -1,4 +1,6 @@
-# ADis Chat System using pyro (python)
+# ADis Chat System (L'Algorithme de Boulangerie) using pyro (python)
+
+## Project By Hocine Abdellatif Houari
 
 #### Tested on Windows 10, Python 3.9.5
 > Required packages: `PyQt5` and `Pyro4`.
@@ -6,7 +8,7 @@
 To run the App (GUI):
 1. open a terminal and run:
 ```sh
-python control.py
+python main.py
 ```
 2. Start a nameserver.
 3. Create as many clients as you want.

@@ -56,7 +56,8 @@ class LamportBakery(ChatServer):
         else:
             try:
                 return self.clients[i].cl_choix()
-            except Exception:
+            except Exception as ex:
+                print(ex)
                 return False
 
     def get_num(self, i: int, onerror_val: int) -> int:
@@ -136,7 +137,8 @@ class LamportBakery(ChatServer):
         tow: int  # time to wait inside section critique
         try:
             tow = int(self.window.msg_duration.text())
-        except Exception:
+        except Exception as ex:
+            print(ex)
             tow = 10
 
         Thread(
@@ -181,7 +183,8 @@ class LamportBakery(ChatServer):
                 self.clients[cid].notify_value_changed(
                     self.client_id, self.num
                 )
-            except Exception:
+            except Exception as ex:
+                print(ex)
                 if cid in self.clients.keys():
                     self.clients.pop(cid)
         self.window.status_holder.setText('waiting choix[j] to be set False')

@@ -10,14 +10,20 @@ from PyQt5.QtWidgets import *
 from gui import ControlWindow
 from client import create_client
 from multiprocessing import Process
+from threading import Thread
 
 
-def create_ns():
+def __threaded_create_ns():
     os.system('python -m Pyro4.naming')
 
 
-class ControlUtils:
+def create_ns():
+    ns_thread = Thread(target=__threaded_create_ns)
+    ns_thread.start()
+    ns_thread.join()
 
+
+class ControlUtils:
     def __init__(self, controlWindow: ControlWindow):
         super().__init__()
         self.ns_proc: Process = None
@@ -37,7 +43,6 @@ class ControlUtils:
             count = int(self.controlWindow.clients_count.text()) or 0
             for i in range(count):
                 self.counter += 1
-                print(f'Process [{self.counter}]')
                 p = Process(
                     target=create_client,
                     kwargs={
@@ -54,13 +59,15 @@ class ControlUtils:
 
     def on_name_server_start(self):
         if self.ns_proc is not None and self.ns_proc.is_alive:
-            self.ns_proc.kill()
+            self.ns_proc.terminate()
+            self.ns_proc.join()
             self.ns_proc = None
             self.controlWindow.create_client.setDisabled(True)
             self.controlWindow.start_nameserver.setText('&Start')
             for client in self.clients.values():
                 if client.is_alive:
-                    client.kill()
+                    client.terminate()
+                    client.join()
             self.counter = 0
         else:
             self.ns_proc = Process(target=create_ns)
@@ -72,7 +79,9 @@ class ControlUtils:
     def window_close(self, event):
         event.accept()
         if self.ns_proc is not None and self.ns_proc.is_alive:
-            self.ns_proc.kill()
+            self.ns_proc.terminate()
+            self.ns_proc.join()
             for client in self.clients.values():
                 if client.is_alive:
-                    client.kill()
+                    client.terminate()
+                    client.join()

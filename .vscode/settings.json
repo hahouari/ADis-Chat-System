@@ -1,7 +1,0 @@
-{
-  "python.pythonPath": "C:\\Program Files\\Python39\\python.exe",
-  "python.autoComplete.extraPaths": [
-    // "C:\\Users\\dnory0\\AppData\\Roaming\\Python\\Python39\\site-packages\\PyQt5_Qt5-5.15.2.dist-info",
-    // "C:\\Users\\dnory0\\AppData\\Roaming\\Python\\Python39\\site-packages\\Pyro4-4.80.dist-info",
-  ]
-}
